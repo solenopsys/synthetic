@@ -1,0 +1,20 @@
+{
+  "name": "@solenopsys/helm-booster",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Helm deployments generator",
+  "main": "index.js",
+  "author": "Alex Storm",
+  "license": "ISC",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "js-yaml": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.5",
+    "@types/node": "^20.4.10"
+  },
+  "scripts": {
+    "start": "npx tsx .\\dp-ci\\helm.ts"
+  }
+}
