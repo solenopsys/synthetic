@@ -1,4 +1,3 @@
-#Data source DGraph module for Converged
+# Helm booster
 
-### Build
-sh build.sh
+tool for generate helm chart from ts code
