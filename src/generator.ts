@@ -12,9 +12,9 @@ export function dumpToYaml(obj: any, file:string) {
 
 export function exportToHelmFormat(chart: Manage, distFolder: string) {
     if (!fs.existsSync(distFolder))
-        mkdirSync(distFolder);
+        mkdirSync(distFolder,{recursive: true});
     let arr = chart.exportStruct();
-    console.log(arr);
+
 
     for (let key in arr) {
 
@@ -23,7 +23,6 @@ export function exportToHelmFormat(chart: Manage, distFolder: string) {
 
         if (!fs.existsSync(dir))
             mkdirSync(dir);
-        console.log("FILE", file)
         dumpToYaml(arr[key], file);
     }
 }

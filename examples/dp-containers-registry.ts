@@ -8,7 +8,6 @@ const manage = new Manage({
 })
 
 const container = new Container("alexstorm-hsm-ci");
-container.setEnv({"zmq.SocketUrl":"tcp://*:{{ .Values.containers.router.zmqPort}}"})
 
 manage.addDeployment(new Deployment("ci", [container]));
 manage.addRole(new Role());

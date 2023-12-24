@@ -14,6 +14,6 @@
     "@types/node": "^20.4.10"
   },
   "scripts": {
-    "start": "bun ./examples/dp-ci.ts"
+    "start": "bun ./src/auto.ts"
   }
 }
