@@ -1,6 +1,6 @@
-import {StructPrint} from "./interfaces";
+import {StructPrint} from "../interfaces";
 
-export class Container implements StructPrint {
+ export class Container implements StructPrint {
     constructor(image: string, registry?: string) {
 
 

@@ -1,4 +1,4 @@
-import {StructPrint} from "./interfaces";
+import {StructPrint} from "../interfaces";
 import {Container} from "./container";
 
 export class Deployment implements StructPrint {

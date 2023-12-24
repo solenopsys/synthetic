@@ -1,6 +1,6 @@
 import {StructPrint} from "./interfaces";
-import {Deployment} from "./deployment";
-import {Role} from "./role";
+import {Deployment} from "./model/deployment";
+import {Role} from "./model/role";
 
 export type ChartConf = {
     name: string,
@@ -8,7 +8,7 @@ export type ChartConf = {
     description: string
 }
 
-export class Chart implements StructPrint {
+export class Manage implements StructPrint {
     deployments: Deployment[] = [];
     roles: Role[] = [];
 
@@ -37,7 +37,7 @@ export class Chart implements StructPrint {
     arrayExport(prefix: string, exp: { [name: string]: object }, obj: StructPrint[]): any {
         for (let i = 0; i < obj.length; i++) {
             const o = obj[i];
-            const name = prefix + "-" + o.constructor.name;
+            const name = "templates/"+prefix + "-" + o.constructor.name;
 
             exp[name] = o.export();
         }

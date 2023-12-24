@@ -1,4 +1,4 @@
-import {StructPrint} from "./interfaces";
+import {StructPrint} from "../interfaces";
 
 export class Ingress implements StructPrint {
     name: string
