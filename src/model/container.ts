@@ -1,7 +1,8 @@
-import {StructPrint} from "../interfaces";
+import { StructPrint } from "../interfaces";
+import type { Port } from "./intfs";
 
- export class Container implements StructPrint {
-    constructor(image: string, registry?: string) {
+export class Container implements StructPrint {
+    constructor(name: string, image: string, registry?: string) {
 
 
     }
@@ -16,5 +17,14 @@ import {StructPrint} from "../interfaces";
 
     export(): object {
         return undefined;
+    }
+
+    addPort(port: Port): Container {
+        // return this.newPort(port.name, port.port)
+    }
+
+    mountVolume(volume: Volume, mountPath: string, subPath?: string, readOnly?: boolean) {
+
+     
     }
 }

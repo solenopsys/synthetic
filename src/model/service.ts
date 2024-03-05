@@ -1,5 +1,5 @@
 import { StructPrint } from "../interfaces";
-import { ServiceIntf, ServiceTypes } from "./intfs";
+import { ServiceIntf, ServiceTypes, type Port } from "./intfs";
 
 
 
@@ -40,7 +40,10 @@ export class Service implements StructPrint {
         this.conf = this.default()
     }
 
-    port(name: string, port: number, targetPort?: number): Service {
+    addPort(port: Port): Service {
+       return this.newPort(port.name, port.port)
+    }
+    newPort(name: string, port: number, targetPort?: number): Service {
         this.conf.spec?.ports.push({ name, port, targetPort: targetPort ? targetPort : port })
         return this
     }

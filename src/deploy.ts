@@ -1,5 +1,5 @@
 import type { StructPrint } from "./interfaces";
-import { Service } from "./model";
+import { Ingress, Service } from "./model";
 import { Deployment } from "./model/deployment";
 import { LoadBalancer } from "./model/loadbalancer";
 import { Role } from "./model/role";
@@ -40,13 +40,15 @@ export class Deploy implements StructPrint {
     processItem(obj: any) {
 
         if (obj instanceof LoadBalancer)
-            this.exportItem(obj, "loadbalancer")
+            this.exportItem(obj, "lb")
         else if (obj instanceof Service)
-            this.exportItem(obj, "service")
+            this.exportItem(obj, "ser")
         else if (obj instanceof Role)
-            this.exportItem(obj, "role")
+            this.exportItem(obj, "rl")
         else if (obj instanceof Deployment)
-            this.exportItem(obj, "deployment")
+            this.exportItem(obj, "d[")
+        else if (obj instanceof Ingress)
+            this.exportItem(obj, "ing")
     }
 
     exportStruct(): { [name: string]: object } {

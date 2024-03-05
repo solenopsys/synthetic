@@ -1,16 +1,21 @@
+
 export interface Port {
     port: number;
     name: string;
-    targetPort: number;
+}
+
+export interface PortLink extends Port{
+
+    targetPort?: number;
 }
 
 export enum ServiceTypes {
-    LoadBalancer="LoadBalancer",
-    Service="Service"
+    LoadBalancer = "LoadBalancer",
+    Service = "Service"
 }
 
 export interface ServiceSpec {
-    ports: Port[];
+    ports: PortLink[];
     selector: {
         app: string;
     };
@@ -24,9 +29,12 @@ export interface ServiceMetadata {
     name: string;
 }
 
-export interface ServiceIntf {
+
+export type ServiceIntf = {
     apiVersion: 'v1';
     kind: 'Service';
     metadata: ServiceMetadata;
     spec?: ServiceSpec;
 }
+
+ 
