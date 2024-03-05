@@ -1,5 +1,5 @@
 
-import { Deploy, Ingress, Service, LoadBalancer } from "@solenopsys/syntetic";
+import { Deploy, Ingress, Service, LoadBalancer } from "@solenopsys/synthetic";
 
 const name = "ipfs-node";
 

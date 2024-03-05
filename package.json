@@ -1,5 +1,5 @@
 {
-  "name": "@solenopsys/syntetyc",
+  "name": "@solenopsys/synthetic",
   "version": "1.0.0",
   "type": "module",
   "description": "Shockwave deployment controll",

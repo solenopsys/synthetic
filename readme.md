@@ -1,4 +1,4 @@
-# Helm booster
+# Synthetic
 
-tool for generate helm chart from ts code
+tool for deploy apps to Shockwaves
 
