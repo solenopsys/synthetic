@@ -1,8 +1,8 @@
 {
-  "name": "@solenopsys/helm-booster",
+  "name": "@solenopsys/syntetyc",
   "version": "1.0.0",
   "type": "module",
-  "description": "Helm deployments generator",
+  "description": "Shockwave deployment controll",
   "main": "index.js",
   "author": "Alex Storm",
   "license": "ISC",
@@ -11,9 +11,13 @@
   },
   "devDependencies": {
     "@types/js-yaml": "^4.0.5",
-    "@types/node": "^20.4.10"
+    "@types/node": "^20.4.10",
+    "@types/bun": "latest"
   },
   "scripts": {
     "start": "bun ./src/auto.ts"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
   }
 }

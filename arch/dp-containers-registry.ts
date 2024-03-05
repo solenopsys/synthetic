@@ -1,7 +1,7 @@
 import { Container, Deployment, Role} from "../src/model"
-import {Manage} from "../src/manage";
+import {Deployment} from "../src/deploy";
 
-const manage = new Manage({
+const manage = new Deployment({
     name: "containers-registry",
     version: "0.1.1",
     description: "Docker-registry"
@@ -9,5 +9,5 @@ const manage = new Manage({
 
 const container = new Container("alexstorm-hsm-ci");
 
-manage.addDeployment(new Deployment("ci", [container]));
-manage.addRole(new Role());
+manage.add(new Deployment("ci", [container]));
+manage.add(new Role());

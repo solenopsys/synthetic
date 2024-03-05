@@ -1,16 +1,15 @@
 import {dump} from "js-yaml";
 import {mkdirSync, writeFileSync} from "fs";
-import {Manage} from "./manage";
+import {Deployment} from "./deploy";
 import * as fs from "fs";
 
-export const REGISTRY_SOLENOPSYS = "registry.solenopsys.org";
 
 export function dumpToYaml(obj: any, file:string) {
     const yamlString = dump(obj);
     writeFileSync(file, yamlString, 'utf-8');
 }
 
-export function exportToHelmFormat(chart: Manage, distFolder: string) {
+export function exportToHelmFormat(chart: Deployment, distFolder: string) {
     if (!fs.existsSync(distFolder))
         mkdirSync(distFolder,{recursive: true});
     let arr = chart.exportStruct();
