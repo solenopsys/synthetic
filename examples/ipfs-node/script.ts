@@ -2,37 +2,46 @@
 import {
     Deploy, Ingress, Service, LoadBalancer,
     Port, ConfigMap, ConfigVolume, VolumeClaim,
-    HostPath, Volume, StatefullSet, ExternalService, loadFrom, Container, GB
+    HostPath, Volume, StatefullSet, ExternalService, Container, GB
 } from "@solenopsys/synthetic";
 
-const name = "ipfs-node"
-const description = "IPFS node"
-
+import yaml from "js-yaml";
+import fs from "fs";
+import { VolumeType } from "src/structs";
 
 const routing = "dhtclient"
 
 type Config = {
+    name: string,
+    description: string,
     version: string,
     swarmKey: string,
     nodes: { [key: string]: string }
-    volumes: {
-        staging: number
-        data: number
+    volumesSizes: {
+        staging: string
+        data: string
     }
 }
 
-const config: Config = loadFrom("config.json");
+function loadConfigFromYaml(file: string): Config {
+    const bytes = fs.readFileSync(file, "utf-8");
+    return yaml.load(bytes) as Config;
+}
 
-export const dp = new Deploy({ name, config: config.version, description })
+const config: Config = loadConfigFromYaml("config.yaml");
+
+export const dp = new Deploy(config)
 
 // ports
 const gateway: Port = new Port("gateway", 8080)
 const rpc: Port = new Port("rpc", 5001)
 const p2p: Port = new Port("p2p", 4001)
 
+
 //services
-dp.add(new Service(name).addPort(rpc).addPort(gateway))
-dp.add(new LoadBalancer(name).addPort(p2p))
+const ipfsService = new Service(config.name).addPort(rpc).addPort(gateway);
+dp.add(ipfsService)
+dp.add(new LoadBalancer(config.name).addPort(p2p))
 
 for (let key in config.nodes)
     dp.add(new ExternalService(key).addPort(p2p))
@@ -45,7 +54,7 @@ function genSript() {
     ipfs bootstrap rm all\n\n`;
 
     for (let key in config.nodes)
-        script += `ipfs bootstrap add "/dns4/${key}.default.svc.cluster.local/tcp/${p2p.port}/p2p/${nodes[key]}"\n\n`;
+        script += `ipfs bootstrap add "/dns4/${key}.default.svc.cluster.local/tcp/${p2p.port}/p2p/${config.nodes[key]}"\n\n`;
 
     script += `ipfs config Routing --json '{ "Type": "${routing}" }' `;
     return script
@@ -61,19 +70,18 @@ swarmConf.set("swarm.key", `
 ${config.swarmKey}
 `)
 
-// ingress
-dp.add(new Ingress())
+
 
 
 // claims
-const stagingClaim = new VolumeClaim("staging", config.volumes.staging * GB)
-const dataClaim = new VolumeClaim("data", config.volumes.data * GB);
+const stagingClaim = new VolumeClaim("staging", config.volumesSizes.staging * GB)
+const dataClaim = new VolumeClaim("data", config.volumesSizes.data * GB);
 
 // volumes
-const stagingVolume: Volume = new HostPath(stagingClaim, "/opt/ipfs-staging")
-const dataVolume: Volume = new HostPath(dataClaim, "/opt/ipfs-data")
-const swarmVolume: Volume = new ConfigVolume(swarmConf, "swarm.key")
-const bootstrapVolume: Volume = new ConfigVolume(bootstrapConf, "bootstrap.sh")
+const stagingVolume: VolumeType = new HostPath(stagingClaim, "/opt/ipfs-staging")
+const dataVolume: VolumeType = new HostPath(dataClaim, "/opt/ipfs-data")
+const swarmVolume: VolumeType = new ConfigVolume(swarmConf, "swarm.key")
+const bootstrapVolume: VolumeType = new ConfigVolume(bootstrapConf, "bootstrap.sh")
 
 // Containers
 const kubo: Container = new Container("kubo", "ipfs/kubo")
@@ -85,8 +93,13 @@ kubo.mountVolume(swarmVolume, "/data/ipfs")
 kubo.mountVolume(bootstrapVolume, "/container-init.d/bootstrap.sh")
 
 // Pods
-const ipfsPod: StatefullSet = new StatefullSet(name, 1)
+const ipfsPod: StatefullSet = new StatefullSet(config.name, 1)
 ipfsPod.addContainer(kubo)
 
 dp.add(ipfsPod)
 
+
+// ingress
+const ingress = new Ingress(config.name)
+ingress.addDomain("ipfs.solenopsys.org", ipfsService, gateway, "/")
+dp.add(ingress)

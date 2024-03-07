@@ -1,5 +1,5 @@
 import { REGISTRY_SOLENOPSYS } from "../src/consts"
-import {Container, Deployment, Role} from "../src/model";
+import {Container, Deployment, Role} from "../src/structs";
 import {Deployment} from "../src/deploy";
 export const manage = new Deployment({
     name: "HSM",

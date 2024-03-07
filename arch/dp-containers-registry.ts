@@ -1,4 +1,4 @@
-import { Container, Deployment, Role} from "../src/model"
+import { Container, Deployment, Role} from "../src/structs"
 import {Deployment} from "../src/deploy";
 
 const manage = new Deployment({

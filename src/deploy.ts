@@ -1,10 +1,11 @@
 import type { StructPrint } from "./interfaces";
-import { Ingress, Service } from "./model";
-import { Deployment } from "./model/deployment";
-import { LoadBalancer } from "./model/loadbalancer";
-import { Role } from "./model/role";
+import { Deployment } from "./builders/deployment/deployment";
+import { LoadBalancer } from "./builders/servises/loadbalancer";
+import { Role } from "./builders/role";
+import { Service } from "./builders/servises/service";
+import { Ingress } from "./builders/ingress";
 
-export type ChartConf = {
+export interface ChartConf  {
     name: string,
     version: string,
     description: string

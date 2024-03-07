@@ -1,6 +1,6 @@
 import {dump} from "js-yaml";
 import {mkdirSync, writeFileSync} from "fs";
-import {Deployment} from "./deploy";
+import {Deploy} from "./deploy";
 import * as fs from "fs";
 
 
@@ -9,7 +9,7 @@ export function dumpToYaml(obj: any, file:string) {
     writeFileSync(file, yamlString, 'utf-8');
 }
 
-export function exportToHelmFormat(chart: Deployment, distFolder: string) {
+export function exportToHelmFormat(chart: Deploy, distFolder: string) {
     if (!fs.existsSync(distFolder))
         mkdirSync(distFolder,{recursive: true});
     let arr = chart.exportStruct();

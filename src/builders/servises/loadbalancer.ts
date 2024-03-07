@@ -1,7 +1,6 @@
-import { ServiceTypes } from "./intfs";
+
+import { ServiceTypes } from "src/structs";
 import { Service } from "./service";
-
-
 
 export class LoadBalancer extends Service {
     constructor(name: string) {
