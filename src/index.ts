@@ -6,13 +6,16 @@ import { ConfigMap } from './builders/configmap';
 import { Container } from './parts/container';
 import { VolumeClaim } from './parts/volumeclaim';
 import { HostPath } from './parts/hostpath';
-import { Volume } from './parts/volume';
 import { StatefullSet } from './builders/deployment/statefullset';
 import { ExternalService } from './builders/servises/externalservice';
-import { GB, KB, MB, TB } from './constants';
+import { GB, KB, MB, TB } from './constants'; 
+import { VolumeType } from './structs';
+import { VolumeMount } from './parts/volumemount';
+import { ConfigVolume } from './parts/configvolume';
+import { Port } from './parts/port';
 
 
-export { Deploy, LoadBalancer, Service, Ingress, VolumeClaim, ConfigMap, Container, StatefullSet, HostPath, Volume, ExternalService }
+export { Deploy, LoadBalancer, Service,Port, Ingress, VolumeClaim, ConfigMap, Container, StatefullSet, HostPath,  ExternalService,VolumeMount,ConfigVolume }
 
 
 export { GB, KB, MB, TB }

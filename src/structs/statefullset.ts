@@ -1,5 +1,6 @@
 
 import { ContainerType } from "./container";
+import { VolumeSpecType } from "./volume";
 
 export type StatefullSetType = {
     apiVersion: 'apps/v1';
@@ -16,12 +17,14 @@ export type StatefullSetType = {
         };
         serviceName: string;
         template: {
+
             metadata: {
                 labels: {
                     app: string;
                 };
             };
             spec: {
+                volumes: VolumeSpecType[];
                 containers: ContainerType[];
             };
         };

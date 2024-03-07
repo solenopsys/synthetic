@@ -1,8 +1,6 @@
 
 
 export class VolumeClaim {
-    constructor(name: string, size: number) {
-
-
+    constructor(name: string, size: string) {
     }
 }

@@ -1,22 +1,30 @@
-export type VolumeMetadataType = {
+
+export type VolumeMetadata = {
     name: string;
+}
+
+export type HostPathVolumeType = {
+    path: string;
+    type: string;
+}
+
+export type ConfigMapVolumeType = {
+    name: string;
+    items: {
+        key: string;
+        path: string;
+    }
 }
 
 export type VolumeSpecType = {
     name: string;
-    configMap?: string;
-    secret?: string;
-    hostPath?: string;
-    emptyDir?: string;
-    gcePersistentDisk?: string;
-    nfs?: string;
-    iscsi?: string;
-    flexVolume?: string;
+    configMap?: ConfigMapVolumeType;
+    hostPath?: HostPathVolumeType;
 }
 
 export type VolumeType = {
     apiVersion: 'v1';
     kind: 'Volume';
-    metadata: VolumeMetadataType;
+    metadata: VolumeMetadata;
     spec?: VolumeSpecType;
 }

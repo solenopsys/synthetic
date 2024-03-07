@@ -1,6 +1,7 @@
 import { ContainerType, Port } from "src/structs";
-import { Builder, StructPrint } from "../interfaces";
+import { Builder } from "../interfaces";
 import { VolumeClaim } from "./volumeclaim";
+import { HostPath } from "./hostpath";
 
 export class Container extends Builder<ContainerType> {
     constructor(private name: string, private image: string, private registry?: string) {
@@ -30,7 +31,7 @@ export class Container extends Builder<ContainerType> {
         return this
     }
 
-    mountVolume(volume: Volume, mountPath: string, subPath?: string, readOnly?: boolean) {
+    mountVolume(volume: VolumeMount, mountPath: string, subPath?: string, readOnly?: boolean) {
 
         if(volume instanceof VolumeClaim){
             this.conf.volumeMounts.push({

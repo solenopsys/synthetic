@@ -15,6 +15,7 @@ export const STATEFULLSET_DEFAULT = (name: string, replicas: number): StatefullS
                     app: name
                 }
             },
+
             serviceName: name,
             template: {
                 metadata: {
@@ -23,7 +24,8 @@ export const STATEFULLSET_DEFAULT = (name: string, replicas: number): StatefullS
                     }
                 },
                 spec: {
-                    containers: []
+                    containers: [],
+                    volumes: []
                 }
             },
             volumeClaimTemplates: []

@@ -1,13 +1,12 @@
 
 import {
-    Deploy, Ingress, Service, LoadBalancer,
-    Port, ConfigMap, ConfigVolume, VolumeClaim,
-    HostPath, Volume, StatefullSet, ExternalService, Container, GB
+    Deploy, Ingress, Service, LoadBalancer, ConfigMap, VolumeClaim,
+    HostPath, StatefullSet, ExternalService, Container, VolumeMount, ConfigVolume, Port
 } from "@solenopsys/synthetic";
 
 import yaml from "js-yaml";
 import fs from "fs";
-import { VolumeType } from "src/structs";
+import { PortType, VolumeType } from "src/structs";
 
 const routing = "dhtclient"
 
@@ -33,9 +32,9 @@ const config: Config = loadConfigFromYaml("config.yaml");
 export const dp = new Deploy(config)
 
 // ports
-const gateway: Port = new Port("gateway", 8080)
-const rpc: Port = new Port("rpc", 5001)
-const p2p: Port = new Port("p2p", 4001)
+const gateway: PortType = new Port("gateway", 8080)
+const rpc: PortType = new Port("rpc", 5001)
+const p2p: PortType = new Port("p2p", 4001)
 
 
 //services
@@ -64,24 +63,22 @@ const bootstrapConf = new ConfigMap("ipfs-bootstrap")
 bootstrapConf.set("bootstrap.sh", genSript())
 
 const swarmConf = new ConfigMap("swarm-key")
-swarmConf.set("swarm.key", `
+swarmConf.set("swarm.key", 
+`
 /key/swarm/psk/1.0.0/
 /base16/
 ${config.swarmKey}
 `)
 
-
-
-
 // claims
-const stagingClaim = new VolumeClaim("staging", config.volumesSizes.staging * GB)
-const dataClaim = new VolumeClaim("data", config.volumesSizes.data * GB);
+const stagingClaim = new VolumeClaim("staging", config.volumesSizes.staging)
+const dataClaim = new VolumeClaim("data", config.volumesSizes.data);
 
 // volumes
-const stagingVolume: VolumeType = new HostPath(stagingClaim, "/opt/ipfs-staging")
-const dataVolume: VolumeType = new HostPath(dataClaim, "/opt/ipfs-data")
-const swarmVolume: VolumeType = new ConfigVolume(swarmConf, "swarm.key")
-const bootstrapVolume: VolumeType = new ConfigVolume(bootstrapConf, "bootstrap.sh")
+const stagingVolume: VolumeMount = new HostPath(stagingClaim, "/opt/ipfs-staging")
+const dataVolume: VolumeMount = new HostPath(dataClaim, "/opt/ipfs-data")
+const swarmVolume: VolumeMount = new ConfigVolume(swarmConf, "swarm.key")
+const bootstrapVolume: VolumeMount = new ConfigVolume(bootstrapConf, "bootstrap.sh")
 
 // Containers
 const kubo: Container = new Container("kubo", "ipfs/kubo")

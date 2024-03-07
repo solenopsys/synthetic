@@ -1,8 +1,12 @@
+ 
+import { VolumeClaim } from "./volumeclaim";
+import { VolumeMount } from "./volumemount";
 
-import { StructPrint } from "src/interfaces";
-import { Volume } from "./volume";
-import { VolumeType } from "src/structs";
+export class HostPath implements VolumeMount {
 
-export class HostPath implements VolumeType {
+    constructor(claim: VolumeClaim, path: string) {
+    }
+   
+     
 
 }
