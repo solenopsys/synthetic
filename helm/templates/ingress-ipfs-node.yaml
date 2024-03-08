@@ -15,7 +15,7 @@ spec:
   tls:
     - hosts:
         - ipfs.solenopsys.org
-      secretName: ssl-secretipfs-solenopsys-org
+      secretName: ssl-secret-ipfs-solenopsys-org
   rules:
     - host: ipfs-node
       http:

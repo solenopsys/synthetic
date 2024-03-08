@@ -1,12 +1,7 @@
-
 import {
     Deploy, Ingress, Service, LoadBalancer, ConfigMap, VolumeClaim,
     HostPath, StatefullSet, ExternalService, Container, ConfigVolume, Port
 } from "@solenopsys/synthetic";
-
-
-import { PortType, VolumeType } from "src/structs";
-
 
 const routing = "dhtclient"
 
@@ -22,22 +17,18 @@ type Config = {
     }
 }
 
-export const run=(config: Config) => {
-    console.log("CONFIG",config)
+export const run = (config: Config) => {
+    console.log("CONFIG", config)
     const dp = new Deploy(config)
 
     // ports
-
-    //@ts-ignore
     const gateway = new Port("gateway", 8080)
-    //@ts-ignore
     const rpc = new Port("rpc", 5001)
-    //@ts-ignore
     const p2p = new Port("p2p", 4001)
 
 
     //services
-    console.log("NAME",config.name)
+    console.log("NAME", config.name)
     const ipfsService = new Service(config.name).addPort(rpc).addPort(gateway);
     dp.add(ipfsService)
     dp.add(new LoadBalancer(config.name).addPort(p2p))
@@ -48,27 +39,24 @@ export const run=(config: Config) => {
 
     // config maps
     function genSript() {
-        let script = `#!/bin/sh
-    set -ex
-    ipfs bootstrap rm all\n\n`;
+        let script = `#!/bin/sh\nset -ex\nipfs bootstrap rm all\n`;
 
         for (let key in config.nodes)
-            script += `ipfs bootstrap add "/dns4/${key}.default.svc.cluster.local/tcp/${p2p.port}/p2p/${config.nodes[key]}"\n\n`;
+            script += `ipfs bootstrap add "/dns4/${key}.default.svc.cluster.local/tcp/${p2p.config.port}/p2p/${config.nodes[key]}"\n`;
 
         script += `ipfs config Routing --json '{ "Type": "${routing}" }' `;
+
+        console.log("SCRIPT", script)
         return script
     }
 
     const bootstrapConf = new ConfigMap("ipfs-bootstrap")
     bootstrapConf.set("bootstrap.sh", genSript())
+    dp.add(bootstrapConf)
 
     const swarmConf = new ConfigMap("swarm-key")
-    swarmConf.set("swarm.key",
-        `
-        /key/swarm/psk/1.0.0/
-        /base16/
-        ${config.swarmKey}
-        `)
+    swarmConf.set("swarm.key", `/key/swarm/psk/1.0.0/\n/base16/\n${config.swarmKey}`)
+    dp.add(swarmConf)
 
     // claims
     const stagingClaim = new VolumeClaim("staging", config.volumesSizes.staging)

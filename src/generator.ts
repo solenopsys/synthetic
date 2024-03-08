@@ -5,7 +5,8 @@ import * as fs from "fs";
 
 
 export function dumpToYaml(obj: any, file:string) {
-    const yamlString = dump(obj);
+
+    const yamlString = dump(obj, {lineWidth: 1000});
     writeFileSync(file, yamlString, 'utf-8');
 }
 

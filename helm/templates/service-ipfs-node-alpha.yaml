@@ -2,13 +2,13 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: charlie-ipfs-node-service-service
-  name: charlie-ipfs-node-service
+    app: ipfs-node-alpha-service
+  name: ipfs-node-alpha
 spec:
   ports:
     - name: p2p
       port: 4001
       targetPort: 4001
   selector:
-    app: charlie-ipfs-node-service-pod
+    app: ipfs-node-alpha-pod
   type: ExternalName

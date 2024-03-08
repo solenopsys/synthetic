@@ -31,7 +31,7 @@ export class Ingress extends Builder<IngressType> {
     private genTls(host: string) {
         return {
             hosts: [host],
-            secretName: 'ssl-secret' + host.replace(/\./g, '-')
+            secretName: 'ssl-secret-' + host.replace(/\./g, '-')
         };
     }
 

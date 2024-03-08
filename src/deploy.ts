@@ -4,6 +4,8 @@ import { LoadBalancer } from "./builders/servises/loadbalancer";
 import { Role } from "./builders/role";
 import { Service } from "./builders/servises/service";
 import { Ingress } from "./builders/ingress";
+import { ConfigMap } from "./builders/configmap";
+import { StatefullSet } from "./builders/deployment/statefullset";
 
 export interface ChartConf  {
     name: string,
@@ -34,22 +36,26 @@ export class Deploy implements StructPrint {
     }
 
     exportItem(object: { export: () => void }, prefix: string) {
-        const name = "templates/" + prefix + "-" + object.constructor.name;
+        const name = "templates/" + prefix + "-" + object.getName();
         this.result[name] = object.export()
     }
 
     processItem(obj: any) {
 
         if (obj instanceof LoadBalancer)
-            this.exportItem(obj, "lb")
+            this.exportItem(obj, "loadbalancer")
         else if (obj instanceof Service)
-            this.exportItem(obj, "ser")
+            this.exportItem(obj, "service")
+        else if (obj instanceof ConfigMap)
+            this.exportItem(obj, "configmap")
+        else if (obj instanceof StatefullSet)
+            this.exportItem(obj, "statefullset")
         else if (obj instanceof Role)
-            this.exportItem(obj, "rl")
+            this.exportItem(obj, "role")
         else if (obj instanceof Deployment)
-            this.exportItem(obj, "d[")
+            this.exportItem(obj, "deployment")
         else if (obj instanceof Ingress)
-            this.exportItem(obj, "ing")
+            this.exportItem(obj, "ingress")
     }
 
     exportStruct(): { [name: string]: object } {
