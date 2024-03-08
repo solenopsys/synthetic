@@ -9,4 +9,5 @@ export * from "./container";
 export * from "./deployment";
 export * from "./role";
 export * from "./statefullset";
-export * from "./secret";
+export * from "./secret"; 
+

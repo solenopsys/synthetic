@@ -8,14 +8,12 @@ import { VolumeClaim } from './parts/volumeclaim';
 import { HostPath } from './parts/hostpath';
 import { StatefullSet } from './builders/deployment/statefullset';
 import { ExternalService } from './builders/servises/externalservice';
-import { GB, KB, MB, TB } from './constants'; 
-import { VolumeType } from './structs';
-import { VolumeMount } from './parts/volumemount';
+import { GB, KB, MB, TB } from './constants';  
 import { ConfigVolume } from './parts/configvolume';
 import { Port } from './parts/port';
 
 
-export { Deploy, LoadBalancer, Service,Port, Ingress, VolumeClaim, ConfigMap, Container, StatefullSet, HostPath,  ExternalService,VolumeMount,ConfigVolume }
+export { Deploy, LoadBalancer, Service,Port, Ingress, VolumeClaim, ConfigMap, Container, StatefullSet, HostPath,  ExternalService, ConfigVolume }
 
 
 export { GB, KB, MB, TB }
