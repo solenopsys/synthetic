@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: undefined-service
+spec:
+  ports:
+    - {}
+  selector:
+    app: undefined-pod
+  type: ExternalName

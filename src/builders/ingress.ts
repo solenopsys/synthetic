@@ -21,8 +21,8 @@ export class Ingress extends Builder<IngressType> {
     addDomain(host: string, service: Service, port: PortType, prefix?: string) {
         const pref = prefix ? prefix : "/"
         const h = this.genHost(service.getName(), { service: service.getName(), prefix: pref, port: port.port });
-        super.conf.spec.rules.push(h)
-        super.conf.spec.tls.push(this.genTls(host))
+        this.conf.spec.rules.push(h)
+        this.conf.spec.tls.push(this.genTls(host))
     }
 
 

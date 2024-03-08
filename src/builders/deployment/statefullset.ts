@@ -21,7 +21,9 @@ export class StatefullSet extends Builder<StatefullSetType> {
     }
 
     addContainer(container: Container) {
-        super.conf.spec!.template.spec.containers.push(container.export())
+        const cont = container.export();
+        console.log("CONF",this.conf)
+        this.conf.spec!.template.spec.containers.push(cont)
     }
 
 }

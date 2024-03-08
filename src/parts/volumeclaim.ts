@@ -1,6 +1,10 @@
 
 
 export class VolumeClaim {
-    constructor(name: string, size: string) {
+    constructor(private name: string, size: string) {
+    }
+
+    getName(): string {
+        return this.name
     }
 }

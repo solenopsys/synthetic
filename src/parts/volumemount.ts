@@ -1,4 +1,4 @@
  
 export interface VolumeMount  {
-  name: string;
+    getName(): string;
 }
