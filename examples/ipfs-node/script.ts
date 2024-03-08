@@ -17,6 +17,20 @@ type Config = {
     }
 }
 
+// config maps
+function genSript(nodes: { [key: string]: string }, port: number) {
+    let script = `#!/bin/sh\nset -ex\nipfs bootstrap rm all\n`;
+
+    for (let key in nodes)
+        script += `ipfs bootstrap add "/dns4/${key}.default.svc.cluster.local/tcp/${port}/p2p/${nodes[key]}"\n`;
+
+    script += `ipfs config Routing --json '{ "Type": "${routing}" }' `;
+
+    console.log("SCRIPT", script)
+    return script
+}
+
+
 export const run = (config: Config) => {
     console.log("CONFIG", config)
     const dp = new Deploy(config)
@@ -36,22 +50,8 @@ export const run = (config: Config) => {
     for (let key in config.nodes)
         dp.add(new ExternalService(key).addPort(p2p))
 
-
-    // config maps
-    function genSript() {
-        let script = `#!/bin/sh\nset -ex\nipfs bootstrap rm all\n`;
-
-        for (let key in config.nodes)
-            script += `ipfs bootstrap add "/dns4/${key}.default.svc.cluster.local/tcp/${p2p.config.port}/p2p/${config.nodes[key]}"\n`;
-
-        script += `ipfs config Routing --json '{ "Type": "${routing}" }' `;
-
-        console.log("SCRIPT", script)
-        return script
-    }
-
     const bootstrapConf = new ConfigMap("ipfs-bootstrap")
-    bootstrapConf.set("bootstrap.sh", genSript())
+    bootstrapConf.set("bootstrap.sh", genSript(config.nodes, p2p.config.port))
     dp.add(bootstrapConf)
 
     const swarmConf = new ConfigMap("swarm-key")
