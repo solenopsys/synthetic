@@ -23,19 +23,21 @@ type Config = {
 }
 
 export const run=(config: Config) => {
+    console.log("CONFIG",config)
     const dp = new Deploy(config)
 
     // ports
 
     //@ts-ignore
-    const gateway: PortType = new Port("gateway", 8080)
+    const gateway = new Port("gateway", 8080)
     //@ts-ignore
-    const rpc: PortType = new Port("rpc", 5001)
+    const rpc = new Port("rpc", 5001)
     //@ts-ignore
-    const p2p: PortType = new Port("p2p", 4001)
+    const p2p = new Port("p2p", 4001)
 
 
     //services
+    console.log("NAME",config.name)
     const ipfsService = new Service(config.name).addPort(rpc).addPort(gateway);
     dp.add(ipfsService)
     dp.add(new LoadBalancer(config.name).addPort(p2p))

@@ -2,10 +2,13 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: undefined-service
+    app: ipfs-node-service
+  name: ipfs-node
 spec:
   ports:
-    - {}
+    - name: p2p
+      port: 4001
+      targetPort: 4001
   selector:
-    app: undefined-pod
+    app: ipfs-node-pod
   type: LoadBalancer

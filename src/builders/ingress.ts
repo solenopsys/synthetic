@@ -2,6 +2,7 @@ import { IngressType, PortType } from "src/structs";
 import { Builder, StructPrint } from "../interfaces";
 import { DEFAULTS } from "src/defaults";
 import { Service } from "./servises/service";
+import { Port } from "..";
 
 export class Ingress extends Builder<IngressType> {
     getName(): string {
@@ -10,17 +11,18 @@ export class Ingress extends Builder<IngressType> {
 
     constructor(private name: string) {
         super()
+        this.init()
     }
 
 
-    init(): IngressType {
-        return DEFAULTS.INGRESS(this.name)
+    init() {
+        this.conf = DEFAULTS.INGRESS(this.name);
     }
 
 
-    addDomain(host: string, service: Service, port: PortType, prefix?: string) {
+    addDomain(host: string, service: Service, port: Port, prefix?: string) {
         const pref = prefix ? prefix : "/"
-        const h = this.genHost(service.getName(), { service: service.getName(), prefix: pref, port: port.port });
+        const h = this.genHost(service.getName(), { service: service.getName(), prefix: pref, port: port.config.port });
         this.conf.spec.rules.push(h)
         this.conf.spec.tls.push(this.genTls(host))
     }

@@ -5,14 +5,15 @@ import { ConfigMapType } from "src/structs";
 export class ConfigMap extends Builder<ConfigMapType> {
     constructor(private name: string) {
         super()
+        this.init()
     }
 
     getName(): string {
         return this.name
     }
 
-    init(): ConfigMapType {
-        return DEFAULTS.CONFIGMAP(this.name)
+    init() {
+        this.conf = DEFAULTS.CONFIGMAP(this.name);
     }
 
     set(key: string, value: string) {
